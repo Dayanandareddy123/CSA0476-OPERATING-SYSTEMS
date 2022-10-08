@@ -1,0 +1,107 @@
+Asked 9 years, 2 months ago
+Modified 9 years, 2 months ago
+Viewed 15k times
+
+0
+
+
+I need your help for sequential file access in c programming. Following code is the part of the code I've written.
+
+I can insert a record, search a record, display all records But when it comes for modify and delete I'm unable to get required results. Can you direct me in this case please ?
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int c,i,id;
+char name[20];
+FILE *fp;
+int n;
+int search(FILE *fp,int id);
+void display(FILE *fp);
+
+typedef struct details
+{
+    int id;
+    char name[20];
+}details;
+
+details d;
+
+
+void main()
+{
+    printf("\nHow many records you would like to insert ? : ");
+    scanf("%d",&n);
+    fp=fopen("one.txt","a");
+    for(i=0;i<n;i++)
+    {
+        printf("\nEnter id and name");
+        scanf("%d%s",&d.id,d.name);
+        fwrite(&d,sizeof(d),1,fp);
+    }
+    fclose(fp);
+
+
+    while(1)
+    {
+        printf("\nWhat would you like to do now ? : \n");
+        printf("\n1.Display \t2.Search \t3.Modify \t4.Delete \t5.Exit");
+        scanf("%d",&c);
+        switch(c)
+        {
+            case 1:
+                fp=fopen("one.txt","r+");
+                display(fp);
+                fclose(fp);
+                break;
+            case 2:
+                fp=fopen("one.txt","r+");
+                printf("\nEnter ID to search : ");
+                scanf("%d",&id);
+                if(search(fp,id))
+                {
+                    printf("\nThe record is as follows : ");
+                    printf("\n%d\t%s",d.id,d.name);
+                }
+                else
+                    printf("\nRecord not found");
+                fclose(fp);
+                break;
+            case 3:
+                fp=fopen("one.txt","r+");
+                printf("\nEnter ID to modify d record : ");
+                scanf("%d",&id);
+
+                if(search(fp,id))
+                {
+                    printf("\nEnter new name");
+                    scanf("%s",d.name);
+                    fwrite(&d,sizeof(d),1,fp);
+                }
+                else
+                    printf("\nSpecified record not found ");
+                fclose(fp);
+                break;              
+        }
+    }
+}                           
+
+int search(FILE *fp,int id)
+{
+    rewind(fp);
+    while(fread(&d,sizeof(d),1,fp))
+    {
+        if(id==d.id)
+        return 1;
+    }
+    return 0;
+}
+
+void display(FILE *fp)
+{
+    rewind(fp);
+    while(fread(&d,sizeof(d),1,fp))
+    {
+        printf("\n%d\t%s",d.id,d.name); 
+    }
+}
